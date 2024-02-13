@@ -1,17 +1,25 @@
 import { Image, ScrollView, Text, View } from "react-native";
-import {useLocalSearchParams } from "expo-router"
+import {useLocalSearchParams, useNavigation } from "expo-router"
 import { PRODUCTS } from "@/utils/data/products";
 import { formatCurrency } from "@/utils/functions/format-currency";
 import { Feather } from "@expo/vector-icons"
 import { Button } from "@/components/button";
+import { useCartStore } from "../../stores/cart-store"
 import ButtonLink from "@/components/buttonLink";
 
 
 export default function Product (){
-
     const {id} = useLocalSearchParams();
+    const cartStore =  useCartStore();
+    const navigation = useNavigation();
     
     const product = PRODUCTS.filter((item) => item.id === id)[0];
+
+
+    function handleAddToCart(){
+        cartStore.add(product);
+        navigation.goBack();
+    }
 
     return (
         <ScrollView  showsVerticalScrollIndicator={false}>
@@ -36,7 +44,7 @@ export default function Product (){
                 </View>
 
                 <View className="p-5 pb-8 gap-5">
-                    <Button>
+                    <Button onPress={handleAddToCart}>
                         <Button.Icon>
                             <Feather name="plus-circle" size={20}/>
                         </Button.Icon>
