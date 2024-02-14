@@ -2,7 +2,7 @@ import CategoryButton from "@/components/categoryButton"
 import Header from "@/components/header"
 import  {Product}  from "@/components/product"
 import {View, FlatList, SectionList, Text} from "react-native"
-import { CATEGORIES, MENU} from "@/utils/data/products"
+import { CATEGORIES, MENU, ProductProps} from "@/utils/data/products"
 import { useState, useRef} from "react"
 import { Link } from "expo-router"
 import { useCartStore } from "@/stores/cart-store"
@@ -15,7 +15,7 @@ export default function Home(){
 
     const cartStore = useCartStore();
 
-    const sectionListRef = useRef<SectionList>(null);
+    const sectionListRef = useRef<SectionList<ProductProps>>(null);
 
     const handleCategorySelect = (selectedCategory: string) => {
         setCategory(selectedCategory)
@@ -59,7 +59,7 @@ export default function Home(){
                 stickySectionHeadersEnabled={false}
                 renderItem={({item}) => 
                     <Link href={`/product/${item.id}`} asChild>
-                    <Product data={item} />
+                        <Product data={item} />
                     </Link>
                 }
                 renderSectionHeader={({section : {title} }) => (
